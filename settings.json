@@ -1,0 +1,5 @@
+{
+  "eslint.enable": false,
+  "volar.codeActions.disableDiagnostics": true,
+  "typescript.validate.enable": false
+}
