@@ -21,18 +21,16 @@
       </span>
       <div>Liên hệ</div>
     </div>
-    <div class="nav-item">
-      <span class="icon">
-        <!-- Order icon -->
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="#1976d2">
-          <path
-            d="M3 6v18h18V6H3zm16 16H5V8h14v14zm-2-8H7v-2h10v2zm0 4H7v-2h10v2z"
-          />
-        </svg>
-      </span>
-      <div>Đơn hàng</div>
-    </div>
-    <div class="nav-item">
+    <div class="nav-item" :class="{ active: active === 'orders' }" @click="$router.push('/orders')">
+    <span class="icon">
+      <svg width="32" height="32" viewBox="0 0 24 24">
+        <path d="M3 6v18h18V6H3zm16 16H5V8h14v14zm-2-8H7v-2h10v2zm0 4H7v-2h10v2z" />
+      </svg>
+    </span>
+    <div>Đơn hàng</div>
+  </div>
+
+    <div class="nav-item" :class="{ active: active === 'account-info' }" @click="$router.push('/account-info')">
       <span class="icon">
         <!-- Account icon -->
         <svg width="32" height="32" viewBox="0 0 24 24" fill="#1976d2">

@@ -1,25 +1,22 @@
 <script setup>
 /* eslint-disable */
-const props = defineProps({
-  username: { type: String, default: "ABC" },
-});
+import { getUser } from "../utils/user";
+
+const user = getUser(); // lấy từ session
 </script>
 
 <template>
   <div class="header-bg">
-    <!-- TOP BAR -->
     <div class="top-row">
-      <!-- LEFT: Avatar + Welcome -->
       <div class="left">
-        <img src="/avatar.png" class="avatar" />
+        <img :src="user?.avatar || '/avatar.png'" class="avatar" />
 
         <div class="welcome">
           <div class="hi">Chào mừng trở lại</div>
-          <div class="name">{{ username }}</div>
+          <div class="name">{{ user?.name }}</div>
         </div>
       </div>
 
-      <!-- RIGHT BUTTON GROUP -->
       <div class="btn-group">
         <button class="icon">⋯</button>
         <div class="divider"></div>
@@ -27,7 +24,6 @@ const props = defineProps({
       </div>
     </div>
 
-    <!-- BANNER -->
     <div class="banner"></div>
   </div>
 </template>

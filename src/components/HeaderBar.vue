@@ -62,6 +62,7 @@ function closePage() {
 
 /* Tiêu đề */
 .title {
+  margin-top:16px;
   flex: 1;
   font-size: 18px;
   font-weight: 600;
@@ -84,7 +85,6 @@ function closePage() {
   background: transparent;
   color: white;
   font-size: 18px;
-  padding: 0 6px;
 }
 
 /* Gạch giữa */

@@ -16,13 +16,16 @@ const showAddressModal = ref(false);
 const showAddModal = ref(false);
 const cart = ref([]);
 const route = useRoute();
+const showSuccess = ref(false);
 
 onMounted(() => {
   if (route.query.cart) {
     cart.value = JSON.parse(route.query.cart);
   }
 });
-
+function placeOrder() {
+  showSuccess.value = true;
+}
 function addNewAddress() {
   showAddModal.value = true;
 }
@@ -143,7 +146,17 @@ const totalPay = computed(
     <div class="card">
       <!-- Pick up tại cửa hàng -->
       <div v-if="mode === 'pickup'">
-        <h3>Vị trí cửa hàng</h3>
+      <div class="section-title">Vị trí cửa hàng</div>
+      <div class="row info-row">
+        <img src="/location.png" class="icon icon-blue" />
+        <div class="info-text">
+          <div class="info-main">234 Nguyễn Duy Trinh</div>
+          <div class="info-sub">Phường Bình Trưng, Quận 2, TP.HCM</div>
+        </div>
+      </div>
+
+      <!-- THỜI GIAN NHẬN HÀNG (DÙNG CHUNG CHO CẢ 2 TAB) -->
+      <div class="section-title mt-12">Thời gian nhận hàng</div>
         <div class="row clickable" @click="showTimeModal = true">
           <img src="/clock.png" class="icon" />
           <div>
@@ -154,6 +167,14 @@ const totalPay = computed(
 
       <!-- Delivery -->
       <div v-else>
+      <div class="section-title">Vị trí cửa hàng</div>
+      <div class="row info-row">
+        <img src="/location.png" class="icon icon-blue" />
+        <div class="info-text">
+          <div class="info-main">234 Nguyễn Duy Trinh</div>
+          <div class="info-sub">Phường Bình Trưng, Quận 2, TP.HCM</div>
+        </div>
+      </div>
         <h3>Địa chỉ giao hàng</h3>
         <div class="row clickable" @click="showAddressModal = true">
           <img src="/location.png" class="icon" />
@@ -178,11 +199,6 @@ const totalPay = computed(
           @save="saveNewAddress"
         />
 
-        <h3>Số điện thoại</h3>
-        <div class="row">
-          <img src="/phone.png" class="icon" />
-          <div>0123 456 789</div>
-        </div>
       </div>
     </div>
 
@@ -254,8 +270,31 @@ const totalPay = computed(
       </div>
     </div>
 
-    <!-- BUTTON ĐẶT HÀNG -->
-    <button class="order-btn">Đặt hàng</button>
+  <button class="order-btn" @click="placeOrder">Đặt hàng</button>
+<!-- POPUP ĐẶT THÀNH CÔNG -->
+<div v-if="showSuccess" class="success-overlay">
+  <div class="success-box">
+    <h2 class="success-title">Đặt món thành công</h2>
+    <p class="success-msg">
+      Cảm ơn bạn đã đặt món! <br />
+      Nhà bếp đang chuẩn bị món của bạn. <br />
+      Vui lòng đợi trong giây lát nhé!
+    </p>
+
+    <img class="success-avatar" src="/avatar.png" />
+
+    <div class="success-actions">
+      <button class="btn-gray" @click="showSuccess = false">
+        Trở về trang chủ
+      </button>
+
+      <button class="btn-blue" @click="$router.push('/orders')">
+        Xem hóa đơn
+      </button>
+    </div>
+  </div>
+</div>
+
   </div>
   <div
     v-if="showTimeModal"
@@ -283,6 +322,84 @@ const totalPay = computed(
 </template>
 
 <style>
+/* Overlay mờ */
+.success-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+/* Hộp popup */
+.success-box {
+  width: 80%;
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  animation: fadeScale 0.25s ease;
+  position: relative;
+}
+
+/* Animation popup */
+@keyframes fadeScale {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.success-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.success-msg {
+  font-size: 14px;
+  color: #555;
+  margin: 10px 0 16px;
+  line-height: 1.4;
+}
+
+/* Avatar tròn */
+.success-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  margin: 8px auto;
+  display: block;
+  border: 2px solid white;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+/* Button group */
+.success-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+/* Nút style */
+.btn-gray {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid #d0d4dd;
+  background: #f2f4f7;
+  color: #333;
+  font-size: 14px;
+}
+
+.btn-blue {
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: #1e90ff;
+  color: white;
+  font-size: 14px;
+  border: none;
+}
+
 .order-wrap {
   padding: 3px;
   background: #f3f4f6;
@@ -423,6 +540,47 @@ h3 {
   margin: 10px 0 18px 0;
   border-radius: 10px;
   border: 1px solid #ddd;
+}
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.info-row {
+  background: #f7f8fb;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.icon-blue {
+  width: 22px;
+}
+
+.info-text {
+  font-size: 13px;
+}
+
+.info-main {
+  font-weight: 600;
+}
+
+.info-sub {
+  font-size: 12px;
+  color: #8089a5;
+}
+
+.mt-12 {
+  margin-top: 12px;
+}
+
+.mt-16 {
+  margin-top: 16px;
+}
+
+.placeholder-text {
+  color: #c0c5d5;
+  font-weight: 400;
 }
 
 .confirm-btn {
