@@ -21,6 +21,17 @@ const selectedProduct = ref(null);
 const cart = ref([]);
 const showCartModal = ref(false);
 
+function handleSearch(keyword) {
+  if (!keyword) {
+    products.value = allProducts.value;
+    return;
+  }
+  const lower = keyword.toLowerCase();
+  products.value = allProducts.value.filter((p) =>
+    p.name.toLowerCase().includes(lower)
+  );
+}
+
 // ==============================
 // LOAD API
 // ==============================
@@ -92,7 +103,7 @@ function goToOrder() {
 
 <template>
   <div class="container">
-    <HeaderHome />
+    <HeaderHome @search="handleSearch" />
 
     <h3 class="section-title">Danh mục sản phẩm</h3>
 

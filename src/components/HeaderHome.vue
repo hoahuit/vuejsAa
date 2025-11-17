@@ -1,8 +1,15 @@
 <script setup>
 /* eslint-disable */
 import { getUser } from "../utils/user";
+import { ref, watch, defineEmits } from "vue";
 
 const user = getUser(); // lấy từ session
+const searchText = ref("");
+const emit = defineEmits(["search"]);
+
+watch(searchText, (val) => {
+  emit("search", val);
+});
 </script>
 
 <template>
@@ -25,6 +32,30 @@ const user = getUser(); // lấy từ session
     </div>
 
     <div class="banner"></div>
+  </div>
+  <br />
+  <br />
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <svg
+        class="search-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M11 4a7 7 0 1 1 0 14a7 7 0 0 1 0-14zm0 2a5 5 0 1 0 0 10a5 5 0 0 0 0-10zm7.707 13.293a1 1 0 0 1-1.414 0l-3.387-3.387a8 8 0 1 1 1.414-1.414l3.387 3.387a1 1 0 0 1 0 1.414z"
+          fill="#2ca6ff"
+        />
+      </svg>
+      <input
+        type="text"
+        placeholder="Tìm kiếm sản phẩm, danh mục..."
+        v-model="searchText"
+        @input="$emit('search', searchText)"
+      />
+    </div>
   </div>
 </template>
 
